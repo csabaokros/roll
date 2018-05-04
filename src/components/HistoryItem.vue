@@ -1,6 +1,6 @@
 <template>
   <li>
-    Rolled {{rolled}} at {{at}}
+    <span>{{at.toLocaleTimeString("Hu-hu")}}</span>-kor {{rolledText[rolled]}} dobtál
   </li>
 </template>
 
@@ -10,7 +10,15 @@ export default {
   props: ['at', 'rolled'],
   data () {
     return {
-      msg: 'History'
+      rolledText: [
+        '',
+        'egyest',
+        'kettest',
+        'hármast',
+        'négyest',
+        'ötöst',
+        'hatost'
+      ]
     }
   },
   computed: {
@@ -18,6 +26,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+li {
+  list-style-type: none;
+}
+li > span {
+  font-weight: bold
+}
 </style>

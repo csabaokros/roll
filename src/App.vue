@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="row main">
-      <div class="column column-50">
+      <div class="column">
         <roll/>
       </div>
-      <div class="column column-50">
+      <div class="column">
         <history/>
       </div>
     </div>
@@ -30,5 +30,14 @@ export default {
   height: 100vh;
   align-items: center;
   justify-content: center;
+}
+.column {
+  max-width: 100vw;
+  max-height: 50vh;
+}
+@media screen and (max-width: 641px) and (orientation: landscape) {
+  .column {
+    max-height: 90vh;
+  }
 }
 </style>
