@@ -1,40 +1,47 @@
 <template>
-  <div class="roll">
-    <h1 class="roll" @click="roll" v-if="rolling || rolled">{{rolling ? rolled : lastRoll}}</h1>
+  <div class="roll" @click="roll">
+    <h1 class="roll" v-if="rolling || rolled">{{rolling ? rolled : lastRoll}}</h1>
     <h2 v-else @click="roll">{{msg}}</h2>
   </div>
 </template>
 
 <script>
-import shake from 'shake.js'
+import Shake from 'shake.js'
 
 export default {
   name: 'roll',
   data () {
     return {
-      rolled: 0,
-      rolling: false
+      rolled: 0,  // A pörgetés effekt aktuális száma
+      rolling: false  // A pörgetés effek folyamtban van
     }
   },
   computed: {
+    // Az utolsó valódi dobás betöltése
     lastRoll () {
-      const lastRoll = this.$store.getters['rolls/getLastRoll']
-      return lastRoll ? lastRoll.rolled : lastRoll
+      return  this.$store.getters['rolls/getLastRoll'].rolled
     },
+    // Telefonon rázás, máshol kattintás
     msg () {
-      return ('LinearAccelerationSensor' in window) ? 'Rázd meg a készüléket a dobáshoz' : 'Kattints ide a dobáshoz'
+      return ('LinearAccelerationSensor' in window) ?
+      'Rázd meg a készüléket a dobáshoz' :
+      'Kattints ide a dobáshoz'
     }
   },
   methods: {
     roll() {
+      // Csak a pörgő effekt végén dobhatunk újra
       if (this.rolling) return
       this.rolling = true
+      // Meddig tartson az effekt?
       const rollTimes = 8 + Math.ceil(4 * Math.random())
       let times = rollTimes
+      // Az effekt késleltetett dobásai, az első jelenik meg utoljára, az lesz a valós dobás értéke
       while(--times) {
         setTimeout(time => {
           this.rolled = Math.ceil(6 * Math.random())
           if (rollTimes === time + 1) {
+            // Az első dobás értékét mentjük el
             this.$store.dispatch('rolls/logRoll', this.rolled)
             this.rolling = false
           }
@@ -43,11 +50,12 @@ export default {
     }
   },
   mounted () {
-    const s = new shake({
-      threshold: 8, //default velocity threshold for shake to register
-      timeout: 500 //default interval between events
-    })
-    s.start()
+    // Mi minősül rázásnak?
+    new Shake({
+      threshold: 8,
+      timeout: 500
+    }).start()
+    // El kezdünk figyelni a rázásra
     window.addEventListener('shake', e => {
       this.roll()
     }, false);

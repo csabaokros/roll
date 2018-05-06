@@ -30,6 +30,7 @@ export default {
   height: 100vh;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 .column {
   max-width: 100vw;
