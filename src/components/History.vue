@@ -1,7 +1,7 @@
 <template>
   <div class="centered">
     <ul>
-      <history-item v-for="(item, index) in history" v-bind:key="index" :rolled="item.rolled" :at="item.at" />
+      <history-item v-for="(item, index) in history" :key="index" :rolled="item.rolled" :at="item.at" />
     </ul>
   </div>
 </template>

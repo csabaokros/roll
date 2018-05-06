@@ -31,6 +31,7 @@ export default {
   align-items: center;
   justify-content: center;
   user-select: none;
+  -moz-user-select: none;
 }
 .column {
   max-width: 100vw;
